@@ -1,0 +1,16 @@
+.login {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.form {
+  padding: 30px;
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+  border: 1px solid #0000003f;
+  border-radius: 20px;
+}
