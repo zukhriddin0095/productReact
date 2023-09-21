@@ -26,8 +26,6 @@ const ProductsFilter = () => {
       console.log(err);
     }
   }
-  console.log(data);
-
   return (
     <div className="container">
       <div className="cards mt-5 row">

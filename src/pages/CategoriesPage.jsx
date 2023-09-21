@@ -13,8 +13,6 @@ const CategoriesPage = () => {
   const [isLoading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
 
-  console.log(search);
-
   const handleClose = () => setShow(false);
 
   const openModal = () => {
@@ -91,6 +89,7 @@ const CategoriesPage = () => {
                   return search.toLowerCase() === ""
                     ? item
                     : item.name.toLowerCase().includes(search);
+                    
                 })
                 .map((category) => (
                   <div

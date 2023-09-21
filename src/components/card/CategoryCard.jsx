@@ -12,6 +12,7 @@ const CategoryCard = ({
   editData,
 }) => {
   const delProduct = async (id, getData) => {
+    confirm("o'chirishni hohlesizmi rostanham")
     await request.delete(`categories/${id}`);
     getData();
   };
