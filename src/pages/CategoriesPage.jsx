@@ -3,13 +3,14 @@ import { useForm } from "react-hook-form";
 import request from "../server";
 import CategoryCard from "../components/card/CategoryCard";
 import { Button, Modal } from "react-bootstrap";
+import Loading from "../components/loading/Loading";
 
 const CategoriesPage = () => {
   const { register, handleSubmit, reset } = useForm();
   const [data, setData] = useState([]);
   const [show, setShow] = useState(false);
   const [selected, setSelected] = useState(null);
-  // const [isLoading, setLoading] = useState(false)
+  const [isLoading, setLoading] = useState(false);
 
   const handleClose = () => setShow(false);
 
@@ -25,7 +26,9 @@ const CategoriesPage = () => {
 
   async function getData() {
     try {
+      setLoading(true);
       let { data } = await request.get("/categories");
+      setLoading(false);
       setData(data);
     } catch (err) {
       console.log(err);
@@ -34,10 +37,10 @@ const CategoriesPage = () => {
   console.log(data);
 
   const onSubmit = async (data) => {
-    if(selected === null) {
+    if (selected === null) {
       await request.post("categories", data);
-    }else {
-      await request.put(`categories/${selected}`, data)
+    } else {
+      await request.put(`categories/${selected}`, data);
     }
     getData();
   };
@@ -49,7 +52,7 @@ const CategoriesPage = () => {
       let {
         data: { avatar, name, date },
       } = await request.get(`categories/${id}`);
-      reset({ name, avatar, date});
+      reset({ name, avatar, date });
       console.log(data);
     } catch (err) {
       console.log(err);
@@ -77,20 +80,24 @@ const CategoriesPage = () => {
         <div className="home">
           <h1>All Categories</h1>
           <div className="cards row">
-            {data.map((category) => (
-              <div
-                key={category.id}
-                className="col-12 col-sm-6 col-md-4 col-lg-3"
-              >
-                <CategoryCard
-                  show={show}
-                  openModal={openModal}
-                  editData={editData}
-                  getData={getData}
-                  {...category}
-                />
-              </div>
-            ))}
+            {isLoading ? (
+              <Loading />
+            ) : (
+              data.map((category) => (
+                <div
+                  key={category.id}
+                  className="col-12 col-sm-6 col-md-4 col-lg-3"
+                >
+                  <CategoryCard
+                    show={show}
+                    openModal={openModal}
+                    editData={editData}
+                    getData={getData}
+                    {...category}
+                  />
+                </div>
+              ))
+            )}
           </div>
           <div className="modal"></div>
         </div>
