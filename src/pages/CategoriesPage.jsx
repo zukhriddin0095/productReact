@@ -11,6 +11,9 @@ const CategoriesPage = () => {
   const [show, setShow] = useState(false);
   const [selected, setSelected] = useState(null);
   const [isLoading, setLoading] = useState(false);
+  const [search, setSearch] = useState("");
+
+  console.log(search);
 
   const handleClose = () => setShow(false);
 
@@ -34,7 +37,6 @@ const CategoriesPage = () => {
       console.log(err);
     }
   }
-  console.log(data);
 
   const onSubmit = async (data) => {
     if (selected === null) {
@@ -64,6 +66,7 @@ const CategoriesPage = () => {
       <div className="container">
         <div className="input-group my-3">
           <input
+            onChange={(e) => setSearch(e.target.value)}
             type="text"
             className="form-control"
             placeholder="Searching..."
@@ -83,20 +86,26 @@ const CategoriesPage = () => {
             {isLoading ? (
               <Loading />
             ) : (
-              data.map((category) => (
-                <div
-                  key={category.id}
-                  className="col-12 col-sm-6 col-md-4 col-lg-3"
-                >
-                  <CategoryCard
-                    show={show}
-                    openModal={openModal}
-                    editData={editData}
-                    getData={getData}
-                    {...category}
-                  />
-                </div>
-              ))
+              data
+                .filter((item) => {
+                  return search.toLowerCase() === ""
+                    ? item
+                    : item.name.toLowerCase().includes(search);
+                })
+                .map((category) => (
+                  <div
+                    key={category.id}
+                    className="col-12 col-sm-6 col-md-4 col-lg-3"
+                  >
+                    <CategoryCard
+                      show={show}
+                      openModal={openModal}
+                      editData={editData}
+                      getData={getData}
+                      {...category}
+                    />
+                  </div>
+                ))
             )}
           </div>
           <div className="modal"></div>
